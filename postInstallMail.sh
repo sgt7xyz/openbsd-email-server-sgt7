@@ -80,10 +80,10 @@ openssl req -x509 -new -nodes -key /etc/ssl/private/$domainName.key -out /etc/ss
 chmod 0400 /etc/ssl/$domainName.pub
 chmod 0400 /etc/ssl/private/$domainName.key
 sleep 2
-cp ~/openbsdmail/mail/smtpd.conf /etc/mail/smtpd.conf
+cp mail/smtpd.conf /etc/mail/smtpd.conf
 
 #Create the secrets file. Obviously change the example passwords before running
-cp ~/openbsdmail/mail/secrets /etc/mail/secrets
+cp mail/secrets /etc/mail/secrets
 
 #Set passwords for vmail accounts.
 #Obviously you don't want these default passwords 
@@ -115,7 +115,7 @@ echo '######## Creating The Virutal User Mapping ########'
 echo 'Make sure you edited the virtuals file accordingly for your domain'
 echo 'under /etc/mail/virtuals'
 sleep 2
-cp ~/openbsdmail/mail/virtuals /etc/mail/virtuals
+cp mail/virtuals /etc/mail/virtuals
 
 echo '######## Testing OpenSMTPD Server Configuration ########'
 smtpd -n
@@ -136,12 +136,12 @@ echo '' >> /etc/login.conf
 sleep 2
 
 echo '######## Configuring Dovecot IMAP ########'
-cp -f ~/openbsdmail/dovecot/local.conf /etc/dovecot
-cp -f ~/openbsdmail/dovecot/report-ham.sieve /usr/local/lib/dovecot/sieve
-cp -f ~/openbsdmail/dovecot/report-spam.sieve /usr/local/lib/dovecot/sieve
-cp -f ~/openbsdmail/dovecot/sa-learn-ham.sh /usr/local/lib/dovecot/sieve
-cp -f ~/openbsdmail/dovecot/sa-learn-spam.sh /usr/local/lib/dovecot/sieve
-cp -f ~/openbsdmail/dovecot/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf
+cp -f dovecot/local.conf /etc/dovecot
+cp -f dovecot/report-ham.sieve /usr/local/lib/dovecot/sieve
+cp -f dovecot/report-spam.sieve /usr/local/lib/dovecot/sieve
+cp -f dovecot/sa-learn-ham.sh /usr/local/lib/dovecot/sieve
+cp -f dovecot/sa-learn-spam.sh /usr/local/lib/dovecot/sieve
+cp -f dovecot/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf
 
 sievec /usr/local/lib/dovecot/sieve/report-ham.sieve
 sievec /usr/local/lib/dovecot/sieve/report-spam.sieve
