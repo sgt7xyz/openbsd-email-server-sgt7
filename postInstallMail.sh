@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env ksh
 
 #Install and configure a Mail Server on OpenBSD 6.8
 #This configures an OpenBSD server just for email.
