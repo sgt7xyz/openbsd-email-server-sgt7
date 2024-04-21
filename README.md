@@ -2,7 +2,7 @@
 
 # DIY Email Server
 
-#### Create a new VM in a cloud provider that supports OpenBSD. I use Vultr. Here is an [affiliate link](https://www.vultr.com/?ref=7126277) if you want to help me out a little. ;-)
+#### Create a new VM in a cloud provider that supports OpenBSD. I use Vultr. Here is an [affiliate link](https://www.vultr.com/?ref=7126277git pulkl) if you want to help me out a little. ;-)
 
 <br>
 
