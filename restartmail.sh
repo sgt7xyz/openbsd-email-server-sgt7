@@ -1,13 +1,23 @@
-#!/usr/bin/env ksh
+#!/usr/bin/env zsh
 
-rcctl stop smtpd
+services=("smtpd" "dovecot" "rspamd")
 
-rcctl stop dovecot
+# Function to stop a service
+stop_service() {
+  doas rcctl stop $1
+}
 
-rcctl stop rspamd
+# Function to start a service
+start_service() {
+  doas rcctl start $1
+}
 
-rcctl start rspamd
+# Loop over the services and stop each one
+for service in "${services[@]}"; do
+  stop_service $service
+done
 
-rcctl start dovecot
-
-rcctl start smtpd
+# Loop over the services and start each one
+for service in "${services[@]}"; do
+  start_service $service
+done
