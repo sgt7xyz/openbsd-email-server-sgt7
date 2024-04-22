@@ -12,4 +12,4 @@ fi
 newDomainName=$1
 
 # Use sed to replace 'sgt7.xyz' with the new domain name
-find . -type f -not -name 'prepConfiguration.sh' -exec sed -i '' "s/DOMAIN-NAME/${newDomainName}/g" {} \;
+LC_ALL=C find . -type f -not -name 'prepConfiguration.sh' -exec sed -i '' "s/DOMAIN-NAME/${newDomainName}/g" {} \;
