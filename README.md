@@ -20,10 +20,9 @@
 mail01# preInstallMail.sh
 ```
 
-#### Log in and patch again from the CLI with the following two commands. The server should be fully up to date.
+#### Log in and run syspatch again from the CLI with the following command to ensure binary patching is complete. The server should be fully up to date.
 
 ```bash
-mail01# pkg_add -u
 mail01# syspatch
 ```
 
