@@ -7,11 +7,11 @@
 #Read through ALL the documentation, config files etc. before executing!
 #Author: Steven Tardonia
 
-#### Set your domainName in the Variables Section below ####
+#### Set your {DOMAIN-NAME} in the Variables Section below ####
 
 ################ Variables Section #################
 #Set your domain name e.g. example.com
-domainName="<domainname>"
+#DOMAIN-NAME="<DOMAIN-NAME>"
 
 ####################################################
 #Update Packages
@@ -40,20 +40,20 @@ sleep 2
 echo '######## Creating Public/Private Keys for DKIM And Setting Permissions ########'
 sleep 2
 mkdir /etc/mail/dkim
-openssl genrsa -out "/etc/mail/dkim/$domainName.key" 1024
-openssl rsa -in "/etc/mail/dkim/$domainName.key" -pubout -out /etc/mail/dkim/$domainName.pub""
-chmod 0440 /etc/mail/dkim/$domainName.key
-chmod 0400 /etc/mail/dkim/$domainName.pub
-chown root:_rspamd /etc/mail/dkim/$domainName.key
+openssl genrsa -out "/etc/mail/dkim/${DOMAIN-NAME}.key" 1024
+openssl rsa -in "/etc/mail/dkim/${DOMAIN-NAME}.key" -pubout -out /etc/mail/dkim/${DOMAIN-NAME}.pub""
+chmod 0440 /etc/mail/dkim/${DOMAIN-NAME}.key
+chmod 0400 /etc/mail/dkim/${DOMAIN-NAME}.pub
+chown root:_rspamd /etc/mail/dkim/${DOMAIN-NAME}.key
 
 #Capture Public Key for DKIM DNS Record
-cat "/etc/mail/dkim/$domainName.pub" > ~/dkim.txt
+cat "/etc/mail/dkim/${DOMAIN-NAME}.pub" > ~/dkim.txt
 
 #Use the dkim.txt to create the follwing record. I like to use the date of creation as the selector e.g.
-#20210131._domainkey.<domainname>.	IN TXT
+#20210131._domainkey.<{DOMAIN-NAME}>.	IN TXT
 #v=DKIM1;k=rsa;p=your public key here
 #e.g.
-#20210131._domainkey.<domainname>. IN TXT "v=DKIM1;k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDeM5OB34vhU1HNRpFGKymLvKJ
+#20210131._domainkey.<{DOMAIN-NAME}>. IN TXT "v=DKIM1;k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDeM5OB34vhU1HNRpFGKymLvKJ
 #0beROiopOT8onk68fROm2Z71yRQ0sgE9NRSOXcLP7/uKWmgXJT6TbbAHt44AS46sm
 #odyxe0lvlMToN+CykiWEdtotmugPHZQzO8hPx9L3bU2ZCs08j+jn6CUm4RQQUHdf
 #hV0xb9QjAgcAxYfukQIDAQAB;"
@@ -69,16 +69,16 @@ echo '######## Creating Public/Private Keys for OpenSMTPD And Setting Permission
 #There are numerous ways to secure OpenSMTPD with TLS. Everything from self signed certs to Let's Encrypt
 #I use Cloudflare
 #echo 'Copying Public/Private Keys for OpenSMTPD Email Encryption And Setting Permissions'
-#cp ~/openbsdmail/ssl/<domainname>.pub /etc/ssl/<domainname>.pub
-#cp ~/openbsdmail/ssl/private/<domainname>.key /etc/ssl/private/<domainname>.key
+#cp ~/openbsdmail/ssl/<{DOMAIN-NAME}>.pub /etc/ssl/<{DOMAIN-NAME}>.pub
+#cp ~/openbsdmail/ssl/private/<{DOMAIN-NAME}>.key /etc/ssl/private/<{DOMAIN-NAME}>.key
 #chmod 0400 /etc/ssl/*.pub
 #chmod 0400 /etc/ssl/private/*.key
 
 #If you use Cloudflare like me obviously comment out the next four lines.
-openssl genrsa -out /etc/ssl/private/$domainName.key 4096
-openssl req -x509 -new -nodes -key /etc/ssl/private/$domainName.key -out /etc/ssl/$domainName.pub -days 3650 -sha256
-chmod 0400 /etc/ssl/$domainName.pub
-chmod 0400 /etc/ssl/private/$domainName.key
+openssl genrsa -out /etc/ssl/private/${DOMAIN-NAME}.key 4096
+openssl req -x509 -new -nodes -key /etc/ssl/private/${DOMAIN-NAME}.key -out /etc/ssl/${DOMAIN-NAME}.pub -days 3650 -sha256
+chmod 0400 /etc/ssl/${DOMAIN-NAME}.pub
+chmod 0400 /etc/ssl/private/${DOMAIN-NAME}.key
 sleep 2
 cp mail/smtpd.conf /etc/mail/smtpd.conf
 
