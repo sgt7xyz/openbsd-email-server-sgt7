@@ -74,6 +74,9 @@ openssl req -x509 -new -nodes -key /etc/ssl/private/${DOMAIN-NAME}.key -out /etc
 chmod 0400 /etc/ssl/${DOMAIN-NAME}.pub
 chmod 0400 /etc/ssl/private/${DOMAIN-NAME}.key
 sleep 2
+
+# Backup the smtpd.conf file and copy new configuration to /etc/mail
+cp -p /etc/mail/smtpd.conf /etc/mail/smtpd.conf.original
 cp mail/smtpd.conf /etc/mail/smtpd.conf
 
 #Create the secrets file. Obviously change the example passwords before running
