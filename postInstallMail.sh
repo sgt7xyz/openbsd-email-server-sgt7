@@ -41,9 +41,6 @@ chmod 0440 /etc/mail/dkim/${DOMAIN-NAME}.key
 chmod 0400 /etc/mail/dkim/${DOMAIN-NAME}.pub
 chown root:_rspamd /etc/mail/dkim/${DOMAIN-NAME}.key
 
-# Capture Public Key for DKIM DNS Record
-cat "/etc/mail/dkim/${DOMAIN-NAME}.pub" > ~/dkim.txt
-
 # Use the dkim.txt to create the follwing record. I like to use the date of creation as the selector e.g.
 # 20210131._domainkey.example.com.	IN TXT
 # v=DKIM1;k=rsa;p=your public key here
@@ -51,6 +48,9 @@ cat "/etc/mail/dkim/${DOMAIN-NAME}.pub" > ~/dkim.txt
 # 0beROiopOT8onk68fROm2Z71yRQ0sgE9NRSOXcLP7/uKWmgXJT6TbbAHt44AS46sm
 # odyxe0lvlMToN+CykiWEdtotmugPHZQzO8hPx9L3bU2ZCs08j+jn6CUm4RQQUHdf
 # hV0xb9QjAgcAxYfukQIDAQAB;"
+
+# Capture Public Key for DKIM DNS Record
+cat "/etc/mail/dkim/${DOMAIN-NAME}.pub" > ~/dkim.txt
 
 echo '######## Creating dkim_signing.conf'
 echo 'Make sure this file has been edited for your domain.'
