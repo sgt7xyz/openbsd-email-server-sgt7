@@ -1,8 +1,13 @@
-#For the <domainname> substitute for yours e.g. example.com
-#For <emailaccount> replace with your desired email account
-#e.g. <emailaccount>@<domainname> will become john@example.com
+# # The DOMAIN-NAME variables should be changed by the prepConfiguration.sh script
 
-hostmaster@<domainname>: <emailaccount>@<domainname>
-postmaster@<domainname>: <emailaccount>@<domainname>
-webmaster@<domainname>: <emailaccount>@<domainname>
-<emailaccount>@<domainname>: vmail
+# for yours e.g. example.com.
+
+# For the <emailaccount> replace with your desired email account
+
+# e.g. <emailaccount>@DOMAIN-NAME will become john@example.com
+
+abuse@@DOMAIN-NAME: <emailaccount>@DOMAIN-NAME
+hostmaster@DOMAIN-NAME: <emailaccount>@DOMAIN-NAME
+postmaster@DOMAIN-NAME: <emailaccount>@DOMAIN-NAME
+webmaster@DOMAIN-NAME: <emailaccount>@DOMAIN-NAME
+<emailaccount>@DOMAIN-NAME: vmail

@@ -1,17 +1,12 @@
 #!/usr/bin/env ksh
 
-#Install and configure a Mail Server on OpenBSD 6.8
-#This configures an OpenBSD server just for email.
-#Clone the repo, modify the files and run as root from the repo directory
+# Read through ALL the documentation, config files etc. before executing!
+# Author: Steven Tardonia
 
-#Read through ALL the documentation, config files etc. before executing!
-#Author: Steven Tardonia
-
-#### Set your domainName in the Variables Section below ####
-
-################ Variables Section #################
-#Set your domain name e.g. example.com
-domainName="<domainname>"
+# Install and configure a Mail Server on OpenBSD 7.5
+# This configures an OpenBSD server just for email.
+# Clone the repo and run the prepConfiguration.sh script and the configuration 
+# files should be updated for the most part. Very little manual configuration should be needed. 
 
 ####################################################
 #Update Packages
@@ -21,15 +16,15 @@ echo '#########################################################'
 echo '################ Begin Software Install #################'
 echo '#########################################################'
 
-#Add additional sofware. This is based upon personal preference.
+# Add additional sofware. This is based upon personal preference.
 
-#Install zsh
+# Install zsh
 pkg_add zsh
 
-#Install Unzip
-pkg_add unzip
+# Install Unzip
+pkg_add unzip-6.0p17
 
-#Install OpenSMTP Extras, Redis, rspamd, and Dovecot, 
+# Install OpenSMTP Extras, Redis, rspamd, and Dovecot, 
 pkg_add opensmtpd-extras opensmtpd-filter-rspamd redis rspamd-3.8.4 dovecot-2.3.21v0 dovecot-pigeonhole-0.5.21v1
 
 echo '#########################################################'
@@ -40,53 +35,55 @@ sleep 2
 echo '######## Creating Public/Private Keys for DKIM And Setting Permissions ########'
 sleep 2
 mkdir /etc/mail/dkim
-openssl genrsa -out "/etc/mail/dkim/$domainName.key" 1024
-openssl rsa -in "/etc/mail/dkim/$domainName.key" -pubout -out /etc/mail/dkim/$domainName.pub""
-chmod 0440 /etc/mail/dkim/$domainName.key
-chmod 0400 /etc/mail/dkim/$domainName.pub
-chown root:_rspamd /etc/mail/dkim/$domainName.key
+openssl genrsa -out "/etc/mail/dkim/DOMAIN-NAME.key" 1024
+openssl rsa -in "/etc/mail/dkim/DOMAIN-NAME.key" -pubout -out /etc/mail/dkim/DOMAIN-NAME.pub""
+chmod 0440 /etc/mail/dkim/DOMAIN-NAME.key
+chmod 0400 /etc/mail/dkim/DOMAIN-NAME.pub
+chown root:_rspamd /etc/mail/dkim/DOMAIN-NAME.key
 
-#Capture Public Key for DKIM DNS Record
-cat "/etc/mail/dkim/$domainName.pub" > ~/dkim.txt
+# Use the dkim.txt to create the follwing record. I like to use the date of creation as the selector e.g.
+# 20210131._domainkey.example.com.	IN TXT
+# v=DKIM1;k=rsa;p=your public key here
+# e.g. 20210131._domainkey.example.com. IN TXT "v=DKIM1;k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDeM5OB34vhU1HNRpFGKymLvKJ
+# 0beROiopOT8onk68fROm2Z71yRQ0sgE9NRSOXcLP7/uKWmgXJT6TbbAHt44AS46sm
+# odyxe0lvlMToN+CykiWEdtotmugPHZQzO8hPx9L3bU2ZCs08j+jn6CUm4RQQUHdf
+# hV0xb9QjAgcAxYfukQIDAQAB;"
 
-#Use the dkim.txt to create the follwing record. I like to use the date of creation as the selector e.g.
-#20210131._domainkey.<domainname>.	IN TXT
-#v=DKIM1;k=rsa;p=your public key here
-#e.g.
-#20210131._domainkey.<domainname>. IN TXT "v=DKIM1;k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDeM5OB34vhU1HNRpFGKymLvKJ
-#0beROiopOT8onk68fROm2Z71yRQ0sgE9NRSOXcLP7/uKWmgXJT6TbbAHt44AS46sm
-#odyxe0lvlMToN+CykiWEdtotmugPHZQzO8hPx9L3bU2ZCs08j+jn6CUm4RQQUHdf
-#hV0xb9QjAgcAxYfukQIDAQAB;"
+# Capture Public Key for DKIM DNS Record
+cat "/etc/mail/dkim/DOMAIN-NAME.pub" > ~/dkim.txt
 
 echo '######## Creating dkim_signing.conf'
 echo 'Make sure this file has been edited for your domain.'
 sleep 2
-cp ~/openbsdmail/rspamd/dkim_signing.conf /etc/rspamd/local.d/dkim_signing.conf
+cp rspamd/dkim_signing.conf /etc/rspamd/local.d/dkim_signing.conf
 
 echo '######## Begin Configuring OpenSMTPD ########'
 sleep 2
 echo '######## Creating Public/Private Keys for OpenSMTPD And Setting Permissions ########'
-#There are numerous ways to secure OpenSMTPD with TLS. Everything from self signed certs to Let's Encrypt
-#I use Cloudflare
-#echo 'Copying Public/Private Keys for OpenSMTPD Email Encryption And Setting Permissions'
-#cp ~/openbsdmail/ssl/<domainname>.pub /etc/ssl/<domainname>.pub
-#cp ~/openbsdmail/ssl/private/<domainname>.key /etc/ssl/private/<domainname>.key
-#chmod 0400 /etc/ssl/*.pub
-#chmod 0400 /etc/ssl/private/*.key
+# There are numerous ways to secure OpenSMTPD with TLS. Everything from self signed certs to Let's Encrypt
+# I use Cloudflare
+# echo 'Copying Public/Private Keys for OpenSMTPD Email Encryption And Setting Permissions'
+# cp ssl/DOMAIN-NAME.pub /etc/ssl/DOMAIN-NAME.pub
+# cp ssl/private/DOMAIN-NAME.key /etc/ssl/private/DOMAIN-NAME.key
+# chmod 0400 /etc/ssl/*.pub
+# chmod 0400 /etc/ssl/private/*.key
 
-#If you use Cloudflare like me obviously comment out the next four lines.
-openssl genrsa -out /etc/ssl/private/$domainName.key 4096
-openssl req -x509 -new -nodes -key /etc/ssl/private/$domainName.key -out /etc/ssl/$domainName.pub -days 3650 -sha256
-chmod 0400 /etc/ssl/$domainName.pub
-chmod 0400 /etc/ssl/private/$domainName.key
+# If you use Cloudflare like me obviously comment out the next four lines.
+openssl genrsa -out /etc/ssl/private/DOMAIN-NAME.key 4096
+openssl req -x509 -new -nodes -key /etc/ssl/private/DOMAIN-NAME.key -out /etc/ssl/DOMAIN-NAME.pub -days 3650 -sha256
+chmod 0400 /etc/ssl/DOMAIN-NAME.pub
+chmod 0400 /etc/ssl/private/DOMAIN-NAME.key
 sleep 2
+
+# Backup the smtpd.conf file and copy new configuration to /etc/mail
+cp -p /etc/mail/smtpd.conf /etc/mail/smtpd.conf.original
 cp mail/smtpd.conf /etc/mail/smtpd.conf
 
 #Create the secrets file. Obviously change the example passwords before running
 cp mail/secrets /etc/mail/secrets
 
-#Set passwords for vmail accounts.
-#Obviously you don't want these default passwords 
+# Set passwords for vmail accounts.
+# Obviously you don't want these default passwords 
 smtpctl encrypt 1734923456 >> /etc/mail/secrets
 smtpctl encrypt 1234789456 >> /etc/mail/secrets
 smtpctl encrypt 1234562853 >> /etc/mail/secrets
@@ -123,7 +120,7 @@ sleep 5
 
 echo '######## Begin Configuring Dovecot ########'
 sleep 2
-#Back up original login.conf file
+# Back up original login.conf file
 cp /etc/login.conf /etc/login.conf.original
 
 echo '######## Modifying the local.conf file for your server ########'
