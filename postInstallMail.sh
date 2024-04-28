@@ -22,7 +22,7 @@ echo '#########################################################'
 pkg_add zsh
 
 # Install Unzip
-pkg_add unzip
+pkg_add unzip-6.0p17
 
 # Install OpenSMTP Extras, Redis, rspamd, and Dovecot, 
 pkg_add opensmtpd-extras opensmtpd-filter-rspamd redis rspamd-3.8.4 dovecot-2.3.21v0 dovecot-pigeonhole-0.5.21v1
