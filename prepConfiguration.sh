@@ -12,4 +12,6 @@ fi
 newDomainName=$1
 
 # Use sed to replace 'DOMAIN-NAME' with the new domain name
-LC_ALL=C find . -type f -not -name 'prepConfiguration.sh' -exec sed -i '' "s/DOMAIN-NAME/${newDomainName}/g" {} \;
+#LC_ALL=C find . -type f -not -name 'prepConfiguration.sh' -exec sed -i '' "s/DOMAIN-NAME/${newDomainName}/g" {} \;
+
+LC_ALL=C find . -type f -not -name 'prepConfiguration.sh' -exec sed "s/DOMAIN-NAME/${newDomainName}/g" {} > tmpfile \; -exec mv tmpfile {} \;
