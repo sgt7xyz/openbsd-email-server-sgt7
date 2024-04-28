@@ -35,11 +35,11 @@ sleep 2
 echo '######## Creating Public/Private Keys for DKIM And Setting Permissions ########'
 sleep 2
 mkdir /etc/mail/dkim
-openssl genrsa -out "/etc/mail/dkim/${DOMAIN-NAME}.key" 1024
-openssl rsa -in "/etc/mail/dkim/${DOMAIN-NAME}.key" -pubout -out /etc/mail/dkim/${DOMAIN-NAME}.pub""
-chmod 0440 /etc/mail/dkim/${DOMAIN-NAME}.key
-chmod 0400 /etc/mail/dkim/${DOMAIN-NAME}.pub
-chown root:_rspamd /etc/mail/dkim/${DOMAIN-NAME}.key
+openssl genrsa -out "/etc/mail/dkim/DOMAIN-NAME.key" 1024
+openssl rsa -in "/etc/mail/dkim/DOMAIN-NAME.key" -pubout -out /etc/mail/dkim/DOMAIN-NAME.pub""
+chmod 0440 /etc/mail/dkim/DOMAIN-NAME.key
+chmod 0400 /etc/mail/dkim/DOMAIN-NAME.pub
+chown root:_rspamd /etc/mail/dkim/DOMAIN-NAME.key
 
 # Use the dkim.txt to create the follwing record. I like to use the date of creation as the selector e.g.
 # 20210131._domainkey.example.com.	IN TXT
@@ -50,7 +50,7 @@ chown root:_rspamd /etc/mail/dkim/${DOMAIN-NAME}.key
 # hV0xb9QjAgcAxYfukQIDAQAB;"
 
 # Capture Public Key for DKIM DNS Record
-cat "/etc/mail/dkim/${DOMAIN-NAME}.pub" > ~/dkim.txt
+cat "/etc/mail/dkim/DOMAIN-NAME.pub" > ~/dkim.txt
 
 echo '######## Creating dkim_signing.conf'
 echo 'Make sure this file has been edited for your domain.'
@@ -69,10 +69,10 @@ echo '######## Creating Public/Private Keys for OpenSMTPD And Setting Permission
 # chmod 0400 /etc/ssl/private/*.key
 
 # If you use Cloudflare like me obviously comment out the next four lines.
-openssl genrsa -out /etc/ssl/private/${DOMAIN-NAME}.key 4096
-openssl req -x509 -new -nodes -key /etc/ssl/private/${DOMAIN-NAME}.key -out /etc/ssl/${DOMAIN-NAME}.pub -days 3650 -sha256
-chmod 0400 /etc/ssl/${DOMAIN-NAME}.pub
-chmod 0400 /etc/ssl/private/${DOMAIN-NAME}.key
+openssl genrsa -out /etc/ssl/private/DOMAIN-NAME.key 4096
+openssl req -x509 -new -nodes -key /etc/ssl/private/DOMAIN-NAME.key -out /etc/ssl/DOMAIN-NAME.pub -days 3650 -sha256
+chmod 0400 /etc/ssl/DOMAIN-NAME.pub
+chmod 0400 /etc/ssl/private/DOMAIN-NAME.key
 sleep 2
 
 # Backup the smtpd.conf file and copy new configuration to /etc/mail
