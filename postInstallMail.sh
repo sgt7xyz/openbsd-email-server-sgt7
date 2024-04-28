@@ -63,8 +63,8 @@ echo '######## Creating Public/Private Keys for OpenSMTPD And Setting Permission
 # There are numerous ways to secure OpenSMTPD with TLS. Everything from self signed certs to Let's Encrypt
 # I use Cloudflare
 # echo 'Copying Public/Private Keys for OpenSMTPD Email Encryption And Setting Permissions'
-# cp ssl/<{DOMAIN-NAME}>.pub /etc/ssl/<{DOMAIN-NAME}>.pub
-# cp ssl/private/<{DOMAIN-NAME}>.key /etc/ssl/private/<{DOMAIN-NAME}>.key
+# cp ssl/DOMAIN-NAME.pub /etc/ssl/DOMAIN-NAME.pub
+# cp ssl/private/DOMAIN-NAME.key /etc/ssl/private/DOMAIN-NAME.key
 # chmod 0400 /etc/ssl/*.pub
 # chmod 0400 /etc/ssl/private/*.key
 
