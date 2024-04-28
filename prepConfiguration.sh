@@ -12,4 +12,4 @@ fi
 newDomainName=$1
 
 # Use sed to replace 'DOMAIN-NAME' with the new domain name
-find . -type f -not -name 'prepConfiguration.sh' -exec sed -i '' "s/DOMAIN-NAME/$newDomainName/g" {} \;
+find . -type f -not -name 'prepConfiguration.sh' -exec sed -i "s/DOMAIN-NAME/$newDomainName/g" {} \;
