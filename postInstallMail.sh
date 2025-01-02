@@ -25,7 +25,7 @@ pkg_add zsh
 pkg_add unzip-6.0p17
 
 # Install OpenSMTP Extras, Redis, rspamd, and Dovecot, 
-pkg_add opensmtpd-extras opensmtpd-filter-rspamd redis rspamd-3.8.4 dovecot-2.3.21v0 dovecot-pigeonhole-0.5.21v1
+pkg_add opensmtpd-table-passwd-1.0.1 opensmtpd-filter-rspamd redis opensmtpd-table-redis-1.0 rspamd-3.8.4 dovecot-2.3.21v0 dovecot-pigeonhole-0.5.21v1
 
 echo '#########################################################'
 echo '################# Begin setup of email ##################'
